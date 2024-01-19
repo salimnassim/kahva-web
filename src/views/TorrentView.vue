@@ -1,5 +1,6 @@
 <template>
-  <div v-if="store.filter === undefined" class="w-1/2 pt-6 m-auto text-center">
+  <div v-if="store.filter === undefined || store.system === undefined"
+    class="w-1/2 pt-6 m-auto text-center bg-slate-900 text-slate-400">
     <div class="text-lg">
       Waiting for server...
     </div>
@@ -10,20 +11,92 @@
   <div class="h-full w-full flex flex-col bg-slate-900 text-slate-400" v-if="store.filter !== undefined">
     <div class="grow overflow-x-auto overflow-y-auto w-full">
       <table class="w-full table-auto">
-        <thead>
+        <thead class="sticky">
           <tr class="text-sm text-left border-b border-slate-400">
             <th><input class="w-full bg-slate-900 text-white outline-none" v-model="search" type="text"
                 placeholder="Search" /></th>
-            <th class="hover:cursor-pointer" @click="sort('name')">Priority</th>
-            <th class="hover:cursor-pointer" @click="sort('completed_bytes')">Size</th>
-            <th class="hover:cursor-pointer" @click="sort('upload_rate')">Completed</th>
+            <th class="hover:cursor-pointer" @click="sort('priority')">
+              <div class="flex flex-row justify-between">
+                <div>Priority</div>
+                <div>
+                  <div v-if="store.ui.sorting.key == 'priority' && !store.ui.sorting.direction">▲</div>
+                  <div v-if="store.ui.sorting.key == 'priority' && store.ui.sorting.direction">▼</div>
+                </div>
+              </div>
+            </th>
+            <th class="hover:cursor-pointer" @click="sort('size_bytes')">
+              <div class="flex flex-row justify-between">
+                <div>Size</div>
+                <div>
+                  <div v-if="store.ui.sorting.key == 'size_bytes' && !store.ui.sorting.direction">▲</div>
+                  <div v-if="store.ui.sorting.key == 'size_bytes' && store.ui.sorting.direction">▼</div>
+                </div>
+              </div>
+            </th>
+            <th class="hover:cursor-pointer" @click="sort('completed_bytes')">
+              <div class="flex flex-row justify-between">
+                <div>Completed</div>
+                <div>
+                  <div v-if="store.ui.sorting.key == 'completed_bytes' && !store.ui.sorting.direction">▲</div>
+                  <div v-if="store.ui.sorting.key == 'completed_bytes' && store.ui.sorting.direction">▼</div>
+                </div>
+              </div>
+            </th>
             <th>%</th>
-            <th class="hover:cursor-pointer" @click="sort('upload_rate')">Up Rate</th>
-            <th class="hover:cursor-pointer" @click="sort('download_rate')">Down Rate</th>
-            <th class="hover:cursor-pointer" @click="sort('upload_total')">Up Total</th>
-            <th class="hover:cursor-pointer" @click="sort('download_total')">Down Total</th>
-            <th class="hover:cursor-pointer" @click="sort('leechers')">Leechers</th>
-            <th class="hover:cursor-pointer" @click="sort('seeders')">Seeders</th>
+            <th class="hover:cursor-pointer" @click="sort('upload_rate')">
+              <div class="flex flex-row justify-between">
+                <div>Up rate</div>
+                <div>
+                  <div v-if="store.ui.sorting.key == 'upload_rate' && !store.ui.sorting.direction">▲</div>
+                  <div v-if="store.ui.sorting.key == 'upload_rate' && store.ui.sorting.direction">▼</div>
+                </div>
+              </div>
+            </th>
+            <th class="hover:cursor-pointer" @click="sort('download_rate')">
+              <div class="flex flex-row justify-between">
+                <div>Down rate</div>
+                <div>
+                  <div v-if="store.ui.sorting.key == 'download_rate' && !store.ui.sorting.direction">▲</div>
+                  <div v-if="store.ui.sorting.key == 'download_rate' && store.ui.sorting.direction">▼</div>
+                </div>
+              </div>
+            </th>
+            <th class="hover:cursor-pointer" @click="sort('upload_total')">
+              <div class="flex flex-row justify-between">
+                <div>Up total</div>
+                <div>
+                  <div v-if="store.ui.sorting.key == 'upload_total' && !store.ui.sorting.direction">▲</div>
+                  <div v-if="store.ui.sorting.key == 'upload_total' && store.ui.sorting.direction">▼</div>
+                </div>
+              </div>
+            </th>
+            <th class="hover:cursor-pointer" @click="sort('download_total')">
+              <div class="flex flex-row justify-between">
+                <div>Down total</div>
+                <div>
+                  <div v-if="store.ui.sorting.key == 'download_total' && !store.ui.sorting.direction">▲</div>
+                  <div v-if="store.ui.sorting.key == 'download_total' && store.ui.sorting.direction">▼</div>
+                </div>
+              </div>
+            </th>
+            <th class="hover:cursor-pointer" @click="sort('leechers')">
+              <div class="flex flex-row justify-between">
+                <div>Leechers</div>
+                <div>
+                  <div v-if="store.ui.sorting.key == 'leechers' && !store.ui.sorting.direction">▲</div>
+                  <div v-if="store.ui.sorting.key == 'leechers' && store.ui.sorting.direction">▼</div>
+                </div>
+              </div>
+            </th>
+            <th class="hover:cursor-pointer" @click="sort('seeders')">
+              <div class="flex flex-row justify-between">
+                <div>Seeders</div>
+                <div>
+                  <div v-if="store.ui.sorting.key == 'seeders' && !store.ui.sorting.direction">▲</div>
+                  <div v-if="store.ui.sorting.key == 'seeders' && store.ui.sorting.direction">▼</div>
+                </div>
+              </div>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -39,7 +112,7 @@
             <td>{{ priority(torrent.priority) }}</td>
             <td>{{ human(torrent.size_bytes) }}</td>
             <td>{{ human(torrent.completed_bytes) }}</td>
-            <td>{{ torrent.size_bytes / torrent.completed_bytes * 100 }}%</td>
+            <td>{{ percent(torrent.size_bytes, torrent.completed_bytes) }}</td>
             <td>{{ human(torrent.upload_rate) }}</td>
             <td>{{ human(torrent.download_rate) }}</td>
             <td>{{ human(torrent.upload_total) }}</td>
@@ -87,6 +160,14 @@ function priority(priority: number): string {
     case 3: return 'High';
     default: return '?';
   }
+}
+
+function percent(size_bytes: number, bytes_completed: number): string {
+  const percent = size_bytes / bytes_completed * 100
+  if (percent === Infinity) {
+    return '∞'
+  }
+  return `${percent}%`
 }
 
 // Converts bytes to a human readable format.
