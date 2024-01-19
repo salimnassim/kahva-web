@@ -11,9 +11,23 @@ export interface Sorting {
   direction: boolean
 }
 
+export interface Tooltip {
+  open: boolean
+  x: number | undefined
+  y: number | undefined
+  torrent: Torrent | undefined
+}
+
+export interface Modal {
+  open: boolean
+  torrent: Torrent | undefined
+}
+
 export interface UserInterface {
   collator: Intl.Collator
   sorting: Sorting
+  tooltip: Tooltip
+  modal: Modal
   search: string
   updateInterval: number
   view: string
@@ -30,6 +44,16 @@ export const useStore = defineStore('store', {
     userInterface: {
       collator: new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' }),
       sorting: { key: '', direction: false },
+      tooltip: {
+        open: false,
+        x: undefined,
+        y: undefined,
+        torrent: undefined
+      },
+      modal: {
+        open: false,
+        torrent: undefined
+      },
       search: '',
       updateInterval: 30,
       view: 'main'
@@ -80,6 +104,12 @@ export const useStore = defineStore('store', {
     }
   },
   actions: {
+    async modal(modal: Partial<Modal>) {
+      this.ui.modal = { ...this.ui.modal, ...modal }
+    },
+    async tooltip(tooltip: Partial<Tooltip>) {
+      this.ui.tooltip = { ...this.ui.tooltip, ...tooltip }
+    },
     async sort(key: string, direction: boolean) {
       this.ui.sorting.key = key
       this.ui.sorting.direction = direction

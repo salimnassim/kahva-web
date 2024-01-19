@@ -8,11 +8,15 @@
       If this message does not disappear, check the browser console tab for errors.
     </div>
   </div>
-  <div class="h-full w-full flex flex-col bg-slate-900 text-slate-400" v-if="store.filter !== undefined">
+  <TorrentModal v-if="modal.open" :modal="modal" v-on:close="modal.open = false" />
+  <TorrentTooltip :tooltip="tooltip"
+    v-on:details="(t) => { modal.torrent = t; modal.open = true; tooltip.open = false; }" />
+  <div class="h-full w-full flex flex-col bg-slate-900 text-slate-400" v-if="store.filter !== undefined"
+    @click="tooltip.open = false;">
     <div class="grow overflow-x-auto overflow-y-auto w-full">
       <table class="w-full table-auto">
-        <thead class="sticky">
-          <tr class="text-sm text-left border-b border-slate-400">
+        <thead class="sticky top-0 bg-slate-900 text-xs">
+          <tr class="text-left leading-6 border-b border-slate-400">
             <th><input class="w-full bg-slate-900 text-white outline-none" v-model="search" type="text"
                 placeholder="Search" /></th>
             <th class="hover:cursor-pointer" @click="sort('priority')">
@@ -100,13 +104,16 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="text-sm even:bg-slate-800 hover:bg-slate-600 hover:text-white" v-for="torrent in store.filter"
-            :key="torrent.hash" :data-hash="torrent.hash">
+          <tr class="text-xs leading-6 odd:bg-slate-800 hover:bg-slate-600 hover:text-white"
+            v-for="  torrent   in   store.filter  " :key="torrent.hash" :data-hash="torrent.hash"
+            @click.right.prevent="tooltip.torrent = torrent; tooltip.x = ($event).clientX; tooltip.y = ($event).clientY; tooltip.open = true"
+            :class="{ '!bg-slate-100 !text-black': torrent.hash === tooltip.torrent?.hash }">
             <td class="flex flex-row justify-between">
               <div>{{ torrent.name }}</div>
               <div class="flex flex-row">
-                <div class="text-sm pr-1" v-if="torrent.message" :title="torrent.message">💬</div>
-                <div class="text-sm pr-1 hover:cursor-pointer">🔎</div>
+                <div class="text-sm pr-1" v-if="torrent.message" :title="torrent.message">
+                  <BubbleOval class="w-6 h-6 hover:cursor-help" />
+                </div>
               </div>
             </td>
             <td>{{ priority(torrent.priority) }}</td>
@@ -123,7 +130,7 @@
         </tbody>
       </table>
     </div>
-    <div class="flex flex-row justify-between bg-black text-white text-sm">
+    <div class="flex flex-row justify-between bg-black text-white text-xs">
       <div class="flex flex-row">
         <div>Throttle [{{ human(store.system?.throttle_global_up_max_rate ?? 0) }} / {{
           human(store.system?.throttle_global_down_max_rate ?? 0) }}]</div>
@@ -139,9 +146,31 @@
 </template>
 
 <script setup lang="ts">
-import { useStore } from '@/stores/store'
 import { computed } from 'vue';
+import { useStore, type Tooltip, type Modal } from '@/stores/store'
+import BubbleOval from '@/icons/BubbleOval.vue'
+import TorrentTooltip from '@/components/TorrentTooltip.vue'
+import TorrentModal from '@/components/TorrentModal.vue'
+
 const store = useStore()
+
+const tooltip = computed({
+  get(): Tooltip {
+    return store.ui.tooltip
+  },
+  set(tooltip: Tooltip): void {
+    store.tooltip(tooltip)
+  }
+})
+
+const modal = computed({
+  get(): Modal {
+    return store.ui.modal
+  },
+  set(modal: Modal): void {
+    store.modal(modal)
+  }
+})
 
 const search = computed({
   get(): string {
