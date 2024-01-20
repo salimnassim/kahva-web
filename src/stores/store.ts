@@ -20,7 +20,15 @@ export interface ContextMenu {
 
 export interface Expander {
   open: boolean
+  tab: ExpanderTab
   torrent: Torrent | undefined
+}
+
+export enum ExpanderTab {
+  Details,
+  Files,
+  Trackers,
+  Peers
 }
 
 export interface UserInterface {
@@ -52,6 +60,7 @@ export const useStore = defineStore('store', {
       },
       expander: {
         open: false,
+        tab: ExpanderTab.Details,
         torrent: undefined
       },
       search: '',

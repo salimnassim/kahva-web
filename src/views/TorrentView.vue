@@ -26,19 +26,20 @@
   contextMenu.open = true;
 }" />
     </div>
-    <TorrentExpander v-if="expander.open" v-on:close="expander.open = false;" class="h-[48%]" :expander="expander" />
+    <TorrentExpander v-if="expander.open"
+      v-on:close="() => { expander.open = false; expander.torrent = undefined; expander.tab = ExpanderTab.Details; }"
+      class="h-[48%]" :expander="expander" />
     <TorrentViewFooter />
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useStore, type ContextMenu, type Expander } from '@/stores/store'
+import { useStore, type ContextMenu, type Expander, ExpanderTab } from '@/stores/store'
 import TorrentContextMenu from '@/components/TorrentContextMenu.vue'
 import TorrentExpander from '@/components/TorrentExpander.vue'
 import TorrentTable from '@/components/TorrentTable.vue'
 import TorrentViewFooter from '@/components/TorrentViewFooter.vue'
-
 const store = useStore()
 
 const contextMenu = computed({
