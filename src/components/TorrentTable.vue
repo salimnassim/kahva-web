@@ -127,7 +127,8 @@
         <tbody>
             <tr class="text-xs leading-6 odd:bg-slate-800 hover:bg-slate-600 hover:text-white"
                 v-for="torrent in store.filter" :key="torrent.hash" :data-hash="torrent.hash"
-                @click.right.prevent="$emit('rowClicked', torrent, $event)">
+                @click.right.prevent="$emit('rowClicked', torrent, $event)"
+                :class="{ '!bg-purple-800 !text-white': selected?.hash === torrent.hash }">
                 <td class="flex flex-row justify-between">
                     <div>{{ torrent.name }}</div>
                     <div class="flex flex-row">
@@ -162,6 +163,15 @@ const store = useStore()
 defineEmits<{
     rowClicked: [Torrent, MouseEvent]
 }>()
+
+const selected = computed({
+    get(): Torrent | undefined {
+        return store.ui.contextMenu.torrent
+    },
+    set() {
+        return
+    }
+})
 
 const search = computed({
     get(): string {
