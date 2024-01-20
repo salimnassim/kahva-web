@@ -12,6 +12,7 @@
   <TorrentContextMenu :context-menu="contextMenu" v-on:details="(t) => {
     contextMenu.open = false;
     expander.torrent = t;
+    expander.tab = ExpanderTab.Details;
     expander.open = true;
   }" />
   <div class="h-full w-full flex flex-col bg-slate-900 text-slate-400" v-if="store.filter !== undefined">

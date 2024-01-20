@@ -8,3 +8,12 @@ export interface File {
   is_created: number
   is_open: number
 }
+
+export interface FileResponse {
+  status: 'ok' | 'error'
+  files: File[]
+}
+
+export function IsFileResponse(object: any): object is FileResponse {
+  return 'files' in object
+}

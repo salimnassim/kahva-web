@@ -5,14 +5,21 @@
             <XCircleIcon @click="$emit('close')" class="h-6 w-6 hover:cursor-pointer" />
         </div>
         <TorrentExpanderTabGroup />
-        <div class="h-full overflow-y-auto"></div>
+        <div class="h-full overflow-y-auto p-2 text-sm">
+            <TorrentExpanderTabDetails v-if="expander.tab === ExpanderTab.Details" :torrent="expander.torrent" />
+            <Suspense>
+                <TorrentExpanderTabFiles v-if="expander.tab === ExpanderTab.Files" :torrent="expander.torrent" />
+            </Suspense>
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { type Expander } from '@/stores/store'
+import { type Expander, ExpanderTab } from '@/stores/store'
 import { XCircleIcon } from '@heroicons/vue/24/solid'
 import TorrentExpanderTabGroup from '@/components/TorrentExpanderTabGroup.vue'
+import TorrentExpanderTabDetails from '@/components/TorrentExpanderTabDetails.vue';
+import TorrentExpanderTabFiles from '@/components/TorrentExpanderTabFiles.vue'
 defineProps<{
     expander: Expander
 }>()
