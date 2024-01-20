@@ -29,7 +29,7 @@
             </div>
             <hr class="h-px my-1 border-slate-500">
             <div>
-                <div @click="$emit('details', contextMenu.torrent)"
+                <div @click="$emit('details', contextMenu.torrent);"
                     class="p-1 select-none hover:bg-slate-600 hover:cursor-pointer">Details
                 </div>
                 <div class="p-1 select-none hover:bg-slate-600 hover:cursor-pointer">Properties</div>
