@@ -11,14 +11,14 @@ export interface Sorting {
   direction: boolean
 }
 
-export interface Tooltip {
+export interface ContextMenu {
   open: boolean
   x: number | undefined
   y: number | undefined
   torrent: Torrent | undefined
 }
 
-export interface Modal {
+export interface Expander {
   open: boolean
   torrent: Torrent | undefined
 }
@@ -26,8 +26,8 @@ export interface Modal {
 export interface UserInterface {
   collator: Intl.Collator
   sorting: Sorting
-  tooltip: Tooltip
-  modal: Modal
+  contextMenu: ContextMenu
+  expander: Expander
   search: string
   updateInterval: number
   view: string
@@ -44,13 +44,13 @@ export const useStore = defineStore('store', {
     userInterface: {
       collator: new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' }),
       sorting: { key: '', direction: false },
-      tooltip: {
+      contextMenu: {
         open: false,
         x: undefined,
         y: undefined,
         torrent: undefined
       },
-      modal: {
+      expander: {
         open: false,
         torrent: undefined
       },
@@ -104,11 +104,11 @@ export const useStore = defineStore('store', {
     }
   },
   actions: {
-    async modal(modal: Partial<Modal>) {
-      this.ui.modal = { ...this.ui.modal, ...modal }
+    async expander(expander: Partial<Expander>) {
+      this.ui.expander = { ...this.ui.expander, ...expander }
     },
-    async tooltip(tooltip: Partial<Tooltip>) {
-      this.ui.tooltip = { ...this.ui.tooltip, ...tooltip }
+    async contextMenu(contextMenu: Partial<ContextMenu>) {
+      this.ui.contextMenu = { ...this.ui.contextMenu, ...contextMenu }
     },
     async sort(key: string, direction: boolean) {
       this.ui.sorting.key = key

@@ -8,214 +8,68 @@
       If this message does not disappear, check the browser console tab for errors.
     </div>
   </div>
-  <TorrentModal v-if="modal.open" :modal="modal" v-on:close="modal.open = false" />
-  <TorrentContextMenu :tooltip="tooltip"
-    v-on:details="(t) => { modal.torrent = t; modal.open = true; tooltip.open = false; }" />
-  <div class="h-full w-full flex flex-col bg-slate-900 text-slate-400" v-if="store.filter !== undefined"
-    @click="tooltip.open = false;">
-    <div class="grow overflow-x-auto overflow-y-auto w-full">
-      <table class="w-full table-auto">
-        <thead class="sticky top-0 bg-slate-900 text-xs">
-          <tr class="text-left leading-6 border-b border-slate-400">
-            <th><input class="w-full bg-slate-900 text-white outline-none" v-model="search" type="text"
-                placeholder="Search" /></th>
-            <th class="hover:cursor-pointer" @click="sort('priority')">
-              <div class="flex flex-row justify-between">
-                <div>Priority</div>
-                <div>
-                  <div v-if="store.ui.sorting.key == 'priority' && !store.ui.sorting.direction">▲</div>
-                  <div v-if="store.ui.sorting.key == 'priority' && store.ui.sorting.direction">▼</div>
-                </div>
-              </div>
-            </th>
-            <th class="hover:cursor-pointer" @click="sort('size_bytes')">
-              <div class="flex flex-row justify-between">
-                <div>Size</div>
-                <div>
-                  <div v-if="store.ui.sorting.key == 'size_bytes' && !store.ui.sorting.direction">▲</div>
-                  <div v-if="store.ui.sorting.key == 'size_bytes' && store.ui.sorting.direction">▼</div>
-                </div>
-              </div>
-            </th>
-            <th class="hover:cursor-pointer" @click="sort('completed_bytes')">
-              <div class="flex flex-row justify-between">
-                <div>Completed</div>
-                <div>
-                  <div v-if="store.ui.sorting.key == 'completed_bytes' && !store.ui.sorting.direction">▲</div>
-                  <div v-if="store.ui.sorting.key == 'completed_bytes' && store.ui.sorting.direction">▼</div>
-                </div>
-              </div>
-            </th>
-            <th>%</th>
-            <th class="hover:cursor-pointer" @click="sort('upload_rate')">
-              <div class="flex flex-row justify-between">
-                <div>Up rate</div>
-                <div>
-                  <div v-if="store.ui.sorting.key == 'upload_rate' && !store.ui.sorting.direction">▲</div>
-                  <div v-if="store.ui.sorting.key == 'upload_rate' && store.ui.sorting.direction">▼</div>
-                </div>
-              </div>
-            </th>
-            <th class="hover:cursor-pointer" @click="sort('download_rate')">
-              <div class="flex flex-row justify-between">
-                <div>Down rate</div>
-                <div>
-                  <div v-if="store.ui.sorting.key == 'download_rate' && !store.ui.sorting.direction">▲</div>
-                  <div v-if="store.ui.sorting.key == 'download_rate' && store.ui.sorting.direction">▼</div>
-                </div>
-              </div>
-            </th>
-            <th class="hover:cursor-pointer" @click="sort('upload_total')">
-              <div class="flex flex-row justify-between">
-                <div>Up total</div>
-                <div>
-                  <div v-if="store.ui.sorting.key == 'upload_total' && !store.ui.sorting.direction">▲</div>
-                  <div v-if="store.ui.sorting.key == 'upload_total' && store.ui.sorting.direction">▼</div>
-                </div>
-              </div>
-            </th>
-            <th class="hover:cursor-pointer" @click="sort('download_total')">
-              <div class="flex flex-row justify-between">
-                <div>Down total</div>
-                <div>
-                  <div v-if="store.ui.sorting.key == 'download_total' && !store.ui.sorting.direction">▲</div>
-                  <div v-if="store.ui.sorting.key == 'download_total' && store.ui.sorting.direction">▼</div>
-                </div>
-              </div>
-            </th>
-            <th class="hover:cursor-pointer" @click="sort('leechers')">
-              <div class="flex flex-row justify-between">
-                <div>Leechers</div>
-                <div>
-                  <div v-if="store.ui.sorting.key == 'leechers' && !store.ui.sorting.direction">▲</div>
-                  <div v-if="store.ui.sorting.key == 'leechers' && store.ui.sorting.direction">▼</div>
-                </div>
-              </div>
-            </th>
-            <th class="hover:cursor-pointer" @click="sort('seeders')">
-              <div class="flex flex-row justify-between">
-                <div>Seeders</div>
-                <div>
-                  <div v-if="store.ui.sorting.key == 'seeders' && !store.ui.sorting.direction">▲</div>
-                  <div v-if="store.ui.sorting.key == 'seeders' && store.ui.sorting.direction">▼</div>
-                </div>
-              </div>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="text-xs leading-6 odd:bg-slate-800 hover:bg-slate-600 hover:text-white"
-            v-for="  torrent   in   store.filter  " :key="torrent.hash" :data-hash="torrent.hash"
-            @click.right.prevent="tooltip.torrent = torrent; tooltip.x = ($event).clientX; tooltip.y = ($event).clientY; tooltip.open = true"
-            :class="{ '!bg-slate-100 !text-black': torrent.hash === tooltip.torrent?.hash }">
-            <td class="flex flex-row justify-between">
-              <div>{{ torrent.name }}</div>
-              <div class="flex flex-row">
-                <div class="text-sm pr-1" v-if="torrent.message" :title="torrent.message">
-                  <ChatBubbleOvalLeftEllipsisIcon class="w-6 h-6 hover:cursor-help" />
-                </div>
-              </div>
-            </td>
-            <td>{{ priority(torrent.priority) }}</td>
-            <td>{{ human(torrent.size_bytes) }}</td>
-            <td>{{ human(torrent.completed_bytes) }}</td>
-            <td>{{ percent(torrent.size_bytes, torrent.completed_bytes) }}</td>
-            <td>{{ human(torrent.upload_rate) }}</td>
-            <td>{{ human(torrent.download_rate) }}</td>
-            <td>{{ human(torrent.upload_total) }}</td>
-            <td>{{ human(torrent.download_total) }}</td>
-            <td>{{ torrent.leechers }}</td>
-            <td>{{ torrent.seeders }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="flex flex-row justify-between bg-black text-white text-xs">
-      <div class="flex flex-row">
-        <div>Throttle [{{ human(store.system?.throttle_global_up_max_rate ?? 0) }} / {{
-          human(store.system?.throttle_global_down_max_rate ?? 0) }}]</div>
-        <div class="pl-2">Rate [{{ human(store.system?.throttle_global_up_rate ?? 0) }} / {{
-          human(store.system?.throttle_global_down_rate ?? 0) }}]</div>
+
+  <TorrentContextMenu :context-menu="contextMenu" />
+  <div class="h-full w-full flex flex-col bg-slate-900 text-slate-400" v-if="store.filter !== undefined">
+    <div class="flex flex-col">
+      <div class="h-4/6 grow overflow-x-auto overflow-y-auto w-full">
+        <TorrentTable @click.prevent="() => {
+          contextMenu.open = false;
+          contextMenu.torrent = undefined;
+        }" v-on:row-clicked="(t, e) => {
+  contextMenu.torrent = t;
+  contextMenu.x = e.clientX,
+    contextMenu.y = e.clientY;
+  contextMenu.open = true;
+}" />
       </div>
-      <div class="flex flex-row">
-        <div>rtorrent {{ store.system?.client_version }}/{{ store.system?.library_version }}</div>
-        <div class="pl-2">{{ store.system?.pid }}@{{ store.system?.hostname }}</div>
-      </div>
+      <TorrentExpander class="h-2/6" :expander="expander" />
     </div>
+    <div>xd</div>
   </div>
+
+  <!-- <div class="flex flex-row justify-between bg-black text-white text-xs">
+    <div class="flex flex-row">
+      <div>Throttle [{{ human(store.system?.throttle_global_up_max_rate ?? 0) }} / {{
+        human(store.system?.throttle_global_down_max_rate ?? 0) }}]</div>
+      <div class="pl-2">Rate [{{ human(store.system?.throttle_global_up_rate ?? 0) }} / {{
+        human(store.system?.throttle_global_down_rate ?? 0) }}]</div>
+    </div>
+    <div class="flex flex-row">
+      <div>rtorrent {{ store.system?.client_version }}/{{ store.system?.library_version }}</div>
+      <div class="pl-2">{{ store.system?.pid }}@{{ store.system?.hostname }}</div>
+    </div>
+  </div> -->
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useStore, type Tooltip, type Modal } from '@/stores/store'
+import { useStore, type ContextMenu, type Expander } from '@/stores/store'
 import TorrentContextMenu from '@/components/TorrentContextMenu.vue'
-import TorrentModal from '@/components/TorrentModal.vue'
-import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/vue/24/solid'
+import TorrentExpander from '@/components/TorrentExpander.vue'
+import TorrentTable from '@/components/TorrentTable.vue'
 
 const store = useStore()
 
-const tooltip = computed({
-  get(): Tooltip {
-    return store.ui.tooltip
+const contextMenu = computed({
+  get(): ContextMenu {
+    return store.ui.contextMenu
   },
-  set(tooltip: Tooltip): void {
-    store.tooltip(tooltip)
+  set(contextMenu: ContextMenu): void {
+    store.contextMenu(contextMenu)
   }
 })
 
-const modal = computed({
-  get(): Modal {
-    return store.ui.modal
+const expander = computed({
+  get(): Expander {
+    return store.ui.expander
   },
-  set(modal: Modal): void {
-    store.modal(modal)
+  set(modal: Expander): void {
+    store.expander(modal)
   }
 })
 
-const search = computed({
-  get(): string {
-    return store.ui.search
-  },
-  set(query: string): void {
-    store.search(query)
-  }
-})
 
-function priority(priority: number): string {
-  switch (priority) {
-    case 0: return 'Off';
-    case 1: return 'Low';
-    case 2: return 'Normal';
-    case 3: return 'High';
-    default: return '?';
-  }
-}
-
-function percent(size_bytes: number, bytes_completed: number): string {
-  const percent = size_bytes / bytes_completed * 100
-  if (percent === Infinity) {
-    return '∞'
-  }
-  return `${percent}%`
-}
-
-// Converts bytes to a human readable format.
-function human(bytes: number) {
-  if (bytes === undefined || bytes === 0) {
-    return '0'
-  }
-  const index = Math.floor(Math.log(bytes) / Math.log(1024))
-  return `${Number((bytes / Math.pow(1024, index)).toFixed(2)) * 1} ${(['B', 'KB', 'MB', 'GB', 'TB'] as const)[index]}`
-}
-
-// Changes the UI sorting state.
-function sort(key: string) {
-  if (store.ui.sorting.key === key) {
-    store.sort(key, !store.ui.sorting.direction)
-    return
-  }
-  store.sort(key, false)
-}
 
 // Refresh view every n seconds
 store.refreshView()
