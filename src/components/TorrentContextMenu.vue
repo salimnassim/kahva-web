@@ -16,11 +16,11 @@
             <div>
                 <div class="flex flex-row justify-between p-1 select-none hover:bg-slate-600 hover:cursor-pointer">
                     <div>Priority</div>
-                    <ChevronRight class="w-4 h-4" />
+                    <ChevronRightIcon class="w-4 h-4" />
                 </div>
                 <div class="flex flex-row justify-between p-1 select-none hover:bg-slate-600 hover:cursor-pointer">
                     <div>Labels</div>
-                    <ChevronRight class="w-4 h-4" />
+                    <ChevronRightIcon class="w-4 h-4" />
                 </div>
             </div>
             <hr class="h-px my-1 border-slate-500">
@@ -35,9 +35,10 @@
 </template>
 
 <script setup lang="ts">
-import ChevronRight from '@/icons/ChevronRight.vue'
+import { ChevronRightIcon } from '@heroicons/vue/24/solid'
 import { type Tooltip } from '@/stores/store'
 import { type Torrent } from '@/types/torrent'
+
 defineProps<{
     tooltip: Tooltip
 }>()

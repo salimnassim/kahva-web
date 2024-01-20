@@ -9,7 +9,7 @@
     </div>
   </div>
   <TorrentModal v-if="modal.open" :modal="modal" v-on:close="modal.open = false" />
-  <TorrentTooltip :tooltip="tooltip"
+  <TorrentContextMenu :tooltip="tooltip"
     v-on:details="(t) => { modal.torrent = t; modal.open = true; tooltip.open = false; }" />
   <div class="h-full w-full flex flex-col bg-slate-900 text-slate-400" v-if="store.filter !== undefined"
     @click="tooltip.open = false;">
@@ -148,7 +148,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useStore, type Tooltip, type Modal } from '@/stores/store'
-import TorrentTooltip from '@/components/TorrentTooltip.vue'
+import TorrentContextMenu from '@/components/TorrentContextMenu.vue'
 import TorrentModal from '@/components/TorrentModal.vue'
 import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/vue/24/solid'
 
