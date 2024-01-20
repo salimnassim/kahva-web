@@ -112,7 +112,7 @@
               <div>{{ torrent.name }}</div>
               <div class="flex flex-row">
                 <div class="text-sm pr-1" v-if="torrent.message" :title="torrent.message">
-                  <BubbleOval class="w-6 h-6 hover:cursor-help" />
+                  <ChatBubbleOvalLeftEllipsisIcon class="w-6 h-6 hover:cursor-help" />
                 </div>
               </div>
             </td>
@@ -148,9 +148,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useStore, type Tooltip, type Modal } from '@/stores/store'
-import BubbleOval from '@/icons/BubbleOval.vue'
 import TorrentTooltip from '@/components/TorrentTooltip.vue'
 import TorrentModal from '@/components/TorrentModal.vue'
+import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/vue/24/solid'
 
 const store = useStore()
 
