@@ -133,7 +133,8 @@
                     <div>{{ torrent.name }}</div>
                     <div class="flex flex-row">
                         <div class="text-sm pr-1" v-if="torrent.message" :title="torrent.message">
-                            <ChatBubbleOvalLeftEllipsisIcon class="w-6 h-6 hover:cursor-help" />
+                            <ChatBubbleOvalLeftEllipsisIcon class="w-6 h-6 hover:cursor-help"
+                                :class="{ 'text-red-400': torrent.message.includes('Failure') }" />
                         </div>
                     </div>
                 </td>
