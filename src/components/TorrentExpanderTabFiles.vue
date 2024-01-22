@@ -9,7 +9,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="file in files" :key="file.path">
+            <tr v-for="file in files" :key="file.path" class="odd:bg-slate-800 leading-6">
                 <td>
                     {{ file.path }}
                 </td>

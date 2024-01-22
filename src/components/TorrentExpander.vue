@@ -8,7 +8,12 @@
         <div class="h-full overflow-y-auto p-2 text-sm">
             <TorrentExpanderTabDetails v-if="expander.tab === ExpanderTab.Details" :torrent="expander.torrent" />
             <Suspense>
-                <TorrentExpanderTabFiles v-if="expander.tab === ExpanderTab.Files" :torrent="expander.torrent" />
+                <template #default>
+                    <TorrentExpanderTabFiles v-if="expander.tab === ExpanderTab.Files" :torrent="expander.torrent" />
+                </template>
+                <template #fallback>
+                    Loading...
+                </template>
             </Suspense>
         </div>
     </div>
