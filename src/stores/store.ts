@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { IsViewResponse, type Torrent } from '@/types/torrent'
 import { IsSystemResponse, type System } from '@/types/system'
 import { IsFileResponse, type File } from '@/types/file'
+import { IsTrackerResponse, type Tracker } from '@/types/tracker'
 
 export interface Indexable<T = any> {
   [key: string]: T
@@ -24,6 +25,7 @@ export interface Expander {
   tab: ExpanderTab
   torrent: Torrent | undefined
   files: File[] | undefined
+  trackers: Tracker[] | undefined
 }
 
 export enum ExpanderTab {
@@ -64,7 +66,8 @@ export const useStore = defineStore('store', {
         open: false,
         tab: ExpanderTab.Details,
         torrent: undefined,
-        files: undefined
+        files: undefined,
+        trackers: undefined
       },
       search: '',
       updateInterval: 30,
@@ -192,6 +195,29 @@ export const useStore = defineStore('store', {
           return
         }
         this.userInterface.expander.files = json.files
+      } catch (err: any) {
+        console.error(err)
+        return []
+      }
+    },
+    async trackers(torrent: Torrent) {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_BASE_URL}/api/torrent/${torrent.hash}/trackers`,
+          {
+            method: 'GET'
+          }
+        )
+        if (!res.ok) {
+          console.error(res.status, res.statusText)
+          return
+        }
+        const json = await res.json()
+        if (!IsTrackerResponse(json)) {
+          console.error(`malformed trackers response`)
+          return
+        }
+        this.userInterface.expander.trackers = json.trackers
       } catch (err: any) {
         console.error(err)
         return []

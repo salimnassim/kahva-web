@@ -15,6 +15,14 @@
                     Loading...
                 </template>
             </Suspense>
+            <Suspense>
+                <template #default>
+                    <TorrentExpanderTabTrackers v-if="expander.tab === ExpanderTab.Trackers" :torrent="expander.torrent" />
+                </template>
+                <template #fallback>
+                    Loading...
+                </template>
+            </Suspense>
         </div>
     </div>
 </template>
@@ -25,6 +33,8 @@ import { XCircleIcon } from '@heroicons/vue/24/solid'
 import TorrentExpanderTabGroup from '@/components/TorrentExpanderTabGroup.vue'
 import TorrentExpanderTabDetails from '@/components/TorrentExpanderTabDetails.vue';
 import TorrentExpanderTabFiles from '@/components/TorrentExpanderTabFiles.vue'
+import TorrentExpanderTabTrackers  from '@/components/TorrentExpanderTabTrackers.vue'
+
 defineProps<{
     expander: Expander
 }>()
