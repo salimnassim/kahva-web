@@ -29,12 +29,12 @@
     </div>
     <TorrentExpander v-if="expander.open"
       v-on:close="() => { expander.open = false; expander.torrent = undefined; expander.tab = ExpanderTab.Details; }"
-      class="h-[48%]" :expander="expander" />
+      class="h-[45%]" :expander="expander" />
     <TorrentViewFooter />
   </div>
 </template>
 
-<script setup lang="ts">
+<script async setup lang="ts">
 import { computed } from 'vue';
 import { useStore, type ContextMenu, type Expander, ExpanderTab } from '@/stores/store'
 import TorrentContextMenu from '@/components/TorrentContextMenu.vue'
