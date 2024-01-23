@@ -6,8 +6,10 @@
                 console.error('zero files in input element')
                 return
             }
-            store.upload(files[0])
-        }" type="file" class="hidden" />
+            for (let idx = 0; idx < files.length; idx++) {
+                store.upload(files[idx])
+            }
+        }" type="file" accept="application/x-bittorrent,.torrent" multiple class="hidden" />
         <PlusCircleIcon class="h-6 mr-2 hover:cursor-pointer" @click="() => {
             input.click()
         }" />
