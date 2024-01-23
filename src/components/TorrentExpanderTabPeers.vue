@@ -14,7 +14,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="peer in peers" :key="peer.peer_id" class="odd:bg-slate-800 leading-6">
+            <tr v-for="peer in peers" :key="peer.id" class="odd:bg-slate-800 leading-6">
                 <td>
                     {{ peer.id }}
                 </td>
