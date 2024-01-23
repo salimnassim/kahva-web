@@ -16,7 +16,7 @@
     expander.open = true;
   }" />
   <div class="h-full w-full flex flex-col bg-slate-900 text-slate-400" v-if="store.filter !== undefined">
-    <div class="grow overflow-x-auto overflow-y-auto w-full" :class="{ 'h-[48%]': expander.open }">
+    <div class="grow overflow-x-auto overflow-y-auto w-full" :class="{ 'h-[60%]': expander.open }">
       <TorrentTable @click.prevent="() => {
         contextMenu.open = false;
         contextMenu.torrent = undefined;
@@ -29,7 +29,7 @@
     </div>
     <TorrentExpander v-if="expander.open"
       v-on:close="() => { expander.open = false; expander.torrent = undefined; expander.tab = ExpanderTab.Details; }"
-      class="h-[45%]" :expander="expander" />
+      class="max-h-[40%] h-[40%]" :expander="expander" />
     <TorrentViewFooter />
   </div>
 </template>

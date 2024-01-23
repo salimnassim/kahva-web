@@ -3,6 +3,7 @@ import { IsViewResponse, type Torrent } from '@/types/torrent'
 import { IsSystemResponse, type System } from '@/types/system'
 import { IsFileResponse, type File } from '@/types/file'
 import { IsTrackerResponse, type Tracker } from '@/types/tracker'
+import { IsPeerResponse, type Peer } from '@/types/peer'
 
 export interface Indexable<T = any> {
   [key: string]: T
@@ -26,6 +27,7 @@ export interface Expander {
   torrent: Torrent | undefined
   files: File[] | undefined
   trackers: Tracker[] | undefined
+  peers: Peer[] | undefined
 }
 
 export enum ExpanderTab {
@@ -67,7 +69,8 @@ export const useStore = defineStore('store', {
         tab: ExpanderTab.Details,
         torrent: undefined,
         files: undefined,
-        trackers: undefined
+        trackers: undefined,
+        peers: undefined
       },
       search: '',
       updateInterval: 30,
@@ -218,6 +221,29 @@ export const useStore = defineStore('store', {
           return
         }
         this.userInterface.expander.trackers = json.trackers
+      } catch (err: any) {
+        console.error(err)
+        return []
+      }
+    },
+    async peers(torrent: Torrent) {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_BASE_URL}/api/torrent/${torrent.hash}/peers`,
+          {
+            method: 'GET'
+          }
+        )
+        if (!res.ok) {
+          console.error(res.status, res.statusText)
+          return
+        }
+        const json = await res.json()
+        if (!IsPeerResponse(json)) {
+          console.error(`malformed peers response`)
+          return
+        }
+        this.userInterface.expander.peers = json.peers
       } catch (err: any) {
         console.error(err)
         return []

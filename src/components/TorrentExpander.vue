@@ -23,6 +23,14 @@
                     Loading...
                 </template>
             </Suspense>
+            <Suspense>
+                <template #default>
+                    <TorrentExpanderTabPeers v-if="expander.tab === ExpanderTab.Peers" :torrent="expander.torrent" />
+                </template>
+                <template #fallback>
+                    Loading...
+                </template>
+            </Suspense>
         </div>
     </div>
 </template>
@@ -34,6 +42,7 @@ import TorrentExpanderTabGroup from '@/components/TorrentExpanderTabGroup.vue'
 import TorrentExpanderTabDetails from '@/components/TorrentExpanderTabDetails.vue';
 import TorrentExpanderTabFiles from '@/components/TorrentExpanderTabFiles.vue'
 import TorrentExpanderTabTrackers  from '@/components/TorrentExpanderTabTrackers.vue'
+import TorrentExpanderTabPeers  from '@/components/TorrentExpanderTabPeers.vue'
 
 defineProps<{
     expander: Expander
