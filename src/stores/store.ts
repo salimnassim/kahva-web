@@ -248,6 +248,25 @@ export const useStore = defineStore('store', {
         console.error(err)
         return []
       }
+    },
+    async upload(file: Blob): Promise<void> {
+      const form = new FormData()
+      form.append('file', file)
+
+      try {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/load`, {
+          method: 'POST',
+          body: form
+        })
+        if (!res.ok) {
+          console.error(res.status, res.statusText)
+          return
+        }
+        return
+      } catch (err: any) {
+        console.error(err)
+        return
+      }
     }
   }
 })
