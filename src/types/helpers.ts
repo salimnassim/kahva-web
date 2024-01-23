@@ -14,7 +14,7 @@ export function priority(priority: number): string {
 }
 
 export function percent(size_bytes: number, bytes_completed: number): string {
-  const percent = (size_bytes / bytes_completed) * 100
+  const percent = Math.round((bytes_completed/ size_bytes) * 100)
   if (percent === Infinity) {
     return '∞'
   }
