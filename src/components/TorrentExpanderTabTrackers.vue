@@ -4,6 +4,8 @@
             <tr>
                 <th>URL</th>
                 <th>Type</th>
+                <th>Busy</th>
+                <th>Open</th>
             </tr>
         </thead>
         <tbody>
@@ -13,6 +15,12 @@
                 </td>
                 <td>
                     {{ type(tracker.type) }}
+                </td>
+                <td>
+                    {{ tracker.is_busy ? 'Yes' : 'No' }}
+                </td>
+                <td>
+                    {{ tracker.is_open ? 'Yes' : 'No' }}
                 </td>
             </tr>
         </tbody>
