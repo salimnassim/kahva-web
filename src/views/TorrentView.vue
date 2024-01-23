@@ -16,6 +16,7 @@
     expander.open = true;
   }" />
   <div class="h-full w-full flex flex-col bg-slate-900 text-slate-400" v-if="store.filter !== undefined">
+    <TorrentViewHeader />
     <div class="grow overflow-x-auto overflow-y-auto w-full" :class="{ 'h-[60%]': expander.open }">
       <TorrentTable @click.prevent="() => {
         contextMenu.open = false;
@@ -40,6 +41,7 @@ import { useStore, type ContextMenu, type Expander, ExpanderTab } from '@/stores
 import TorrentContextMenu from '@/components/TorrentContextMenu.vue'
 import TorrentExpander from '@/components/TorrentExpander.vue'
 import TorrentTable from '@/components/TorrentTable.vue'
+import TorrentViewHeader from '@/components/TorrentViewHeader.vue'
 import TorrentViewFooter from '@/components/TorrentViewFooter.vue'
 const store = useStore()
 
