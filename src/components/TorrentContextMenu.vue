@@ -21,17 +21,24 @@
     <div v-if="contextMenu.open" class="absolute" :style="{ left: `${contextMenu.x}px`, top: `${contextMenu.y}px` }">
         <div class="flex flex-col bg-slate-700 text-slate-400 border border-slate-600 w-32 rounded-sm text-xs">
             <div>
-                <div v-if="contextMenu.torrent?.is_active"
+                <div @click="$emit('start', props.contextMenu.torrent)"
                     class="flex flex-row p-1 select-none hover:bg-slate-600 hover:cursor-pointer">
                     Start
                 </div>
-                <div v-if="contextMenu.torrent?.is_active" class="p-1 select-none hover:bg-slate-600 hover:cursor-pointer">
+                <div @click="$emit('resume', props.contextMenu.torrent)"
+                    class="p-1 select-none hover:bg-slate-600 hover:cursor-pointer">
+                    Resume
+                </div>
+                <div @click="$emit('pause', props.contextMenu.torrent)"
+                    class="p-1 select-none hover:bg-slate-600 hover:cursor-pointer">
                     Pause
                 </div>
-                <div v-if="contextMenu.torrent?.is_open" class="p-1 select-none hover:bg-slate-600 hover:cursor-pointer">
+                <div @click="$emit('stop', props.contextMenu.torrent)"
+                    class="p-1 select-none hover:bg-slate-600 hover:cursor-pointer">
                     Stop
                 </div>
-                <div v-if="contextMenu.torrent?.is_open" class="p-1 select-none hover:bg-slate-600 hover:cursor-pointer">
+                <div @click="$emit('recheck', props.contextMenu.torrent)"
+                    class="p-1 select-none hover:bg-slate-600 hover:cursor-pointer">
                     Force
                     re-check
                 </div>
@@ -75,6 +82,7 @@ import { type ContextMenu } from '@/stores/store'
 import { type Torrent, TorrentPriority, type TorrentLabel } from '@/types/torrent'
 import TorrentChildContextMenu from '@/components/TorrentChildContextMenu.vue'
 import { type ChildContextMenu } from '@/types/contextMenu'
+import { status } from '@/types/helpers'
 
 const priorityContextMenu = ref({} as ChildContextMenu)
 const labelContextMenu = ref({} as ChildContextMenu)
@@ -85,8 +93,9 @@ const props = defineProps<{
 
 defineEmits<{
     start: [torrent: Torrent | undefined]
-    pause: [torrent: Torrent | undefined]
     stop: [torrent: Torrent | undefined]
+    resume: [torrent: Torrent | undefined]
+    pause: [torrent: Torrent | undefined]
     recheck: [torrent: Torrent | undefined]
     priority: [torrent: Torrent | undefined, TorrentPriority]
     label: [torrent: Torrent | undefined, TorrentLabel]

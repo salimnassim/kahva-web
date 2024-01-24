@@ -8,9 +8,12 @@
       If this message does not disappear, check the browser console tab for errors.
     </div>
   </div>
-  <TorrentContextMenu :context-menu="contextMenu" v-on:start="(t) => { if (t === undefined) { return }; store.start(t) }"
-    v-on:pause="(t) => { if (t === undefined) { return }; store.pause(t) }"
-    v-on:stop="(t) => { if (t === undefined) { return }; store.stop(t) }" v-on:details="(t) => {
+  <TorrentContextMenu :context-menu="contextMenu"
+    v-on:start="(t) => { if (t === undefined) { return }; store.start(t); contextMenu.open = false; }"
+    v-on:resume="(t) => { if (t === undefined) { return }; store.resume(t); contextMenu.open = false; }"
+    v-on:pause="(t) => { if (t === undefined) { return }; store.pause(t); contextMenu.open = false; }"
+    v-on:recheck="(t) => { if (t === undefined) { return }; store.recheck(t); contextMenu.open = false; }"
+    v-on:stop="(t) => { if (t === undefined) { return }; store.stop(t); contextMenu.open = false; }" v-on:details="(t) => {
       contextMenu.open = false;
       expander.torrent = t;
       expander.tab = ExpanderTab.Details;
@@ -66,9 +69,11 @@ const expander = computed({
   }
 })
 
-// Refresh view every n seconds
+// refresh on load so we dont have to wait for next interval
 store.refreshView()
 store.refreshSystem()
+
+// refresh view every n seconds
 window.setInterval(function () {
   store.refreshView()
   store.refreshSystem()

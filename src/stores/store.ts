@@ -356,6 +356,50 @@ export const useStore = defineStore('store', {
         console.error(err)
         return []
       }
+    },
+    async resume(torrent: Torrent) {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_BASE_URL}/api/torrent/${torrent.hash}/resume`,
+          {
+            method: 'GET'
+          }
+        )
+        if (!res.ok) {
+          console.error(res.status, res.statusText)
+          return
+        }
+        const json = await res.json()
+        if (!IsResponse(json)) {
+          console.error(`malformed resume response`)
+          return
+        }
+      } catch (err: any) {
+        console.error(err)
+        return []
+      }
+    },
+    async recheck(torrent: Torrent) {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_BASE_URL}/api/torrent/${torrent.hash}/hash`,
+          {
+            method: 'GET'
+          }
+        )
+        if (!res.ok) {
+          console.error(res.status, res.statusText)
+          return
+        }
+        const json = await res.json()
+        if (!IsResponse(json)) {
+          console.error(`malformed recheck response`)
+          return
+        }
+      } catch (err: any) {
+        console.error(err)
+        return []
+      }
     }
   }
 })
