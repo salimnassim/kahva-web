@@ -4,6 +4,7 @@
             <tr class="text-left leading-6 border-b border-slate-400">
                 <th><input class="w-full bg-slate-900 text-white outline-none" v-model="search" type="text"
                         placeholder="Search" /></th>
+                <th>Status</th>
                 <th class="hover:cursor-pointer" @click="sort('priority')">
                     <div class="flex flex-row justify-between">
                         <div>Priority</div>
@@ -138,6 +139,7 @@
                         </div>
                     </div>
                 </td>
+                <td>{{ status(torrent) }}</td>
                 <td>{{ priority(torrent.priority) }}</td>
                 <td>{{ human(torrent.size_bytes) }}</td>
                 <td>{{ human(torrent.completed_bytes) }}</td>
@@ -155,7 +157,7 @@
 
 <script setup lang="ts">
 import { ChatBubbleOvalLeftEllipsisIcon, ArrowLongUpIcon, ArrowLongDownIcon } from '@heroicons/vue/24/solid'
-import { human, percent, priority } from '@/types/helpers'
+import { human, percent, priority, status } from '@/types/helpers'
 import { useStore } from '@/stores/store'
 import { computed } from 'vue';
 import type { Torrent } from '@/types/torrent';

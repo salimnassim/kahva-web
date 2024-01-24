@@ -10,6 +10,15 @@ export enum TorrentPriority {
   High = 3
 }
 
+export enum TorrentStatus {
+  Invalid = 'Invalid',
+  Closed = 'Closed',
+  Paused = 'Paused',
+  Stopped = 'Stopped',
+  Started = 'Started',
+  Hashing = 'Hashing'
+}
+
 export interface TorrentLabel {
   name: string
 }
