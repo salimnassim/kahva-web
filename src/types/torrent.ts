@@ -3,6 +3,13 @@ import { type File } from '@/types/file'
 import { type Peer } from '@/types/peer'
 import { type Tracker } from '@/types/tracker'
 
+export enum TorrentPriority {
+  Off = 0,
+  Low = 1,
+  Normal = 2,
+  High = 3
+}
+
 export interface Torrent extends Indexable {
   hash: string
   name: string
@@ -21,7 +28,7 @@ export interface Torrent extends Indexable {
   state: number
   state_changed: number
   state_counter: number
-  priority: number
+  priority: TorrentPriority
 
   files: File[] | undefined
   peers: Peer[] | undefined
@@ -36,4 +43,3 @@ export interface ViewResponse {
 export function IsViewResponse(object: any): object is ViewResponse {
   return 'torrents' in object
 }
-
