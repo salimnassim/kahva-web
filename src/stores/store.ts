@@ -4,6 +4,9 @@ import { IsSystemResponse, type System } from '@/types/system'
 import { IsFileResponse, type File } from '@/types/file'
 import { IsTrackerResponse, type Tracker } from '@/types/tracker'
 import { IsPeerResponse, type Peer } from '@/types/peer'
+import { type ParentContextMenu } from '@/types/contextMenu'
+import { IsResponse } from '@/types/response'
+import { type TorrentPriorityRequest } from '@/types/request'
 
 export interface Indexable<T = any> {
   [key: string]: T
@@ -14,10 +17,7 @@ export interface Sorting {
   direction: boolean
 }
 
-export interface ContextMenu {
-  open: boolean
-  x: number | undefined
-  y: number | undefined
+export interface ContextMenu extends ParentContextMenu {
   torrent: Torrent | undefined
 }
 
@@ -60,8 +60,8 @@ export const useStore = defineStore('store', {
       sorting: { key: '', direction: false },
       contextMenu: {
         open: false,
-        x: undefined,
-        y: undefined,
+        x: 0,
+        y: 0,
         torrent: undefined
       },
       expander: {
@@ -73,7 +73,7 @@ export const useStore = defineStore('store', {
         peers: undefined
       },
       search: '',
-      updateInterval: 30,
+      updateInterval: 24,
       view: 'main'
     },
     torrents: undefined,
@@ -266,6 +266,95 @@ export const useStore = defineStore('store', {
       } catch (err: any) {
         console.error(err)
         return
+      }
+    },
+    async priority(torrent: Torrent, request: TorrentPriorityRequest) {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_BASE_URL}/api/torrent/${torrent.hash}/priority`,
+          {
+            method: 'POST',
+            body: JSON.stringify(request)
+          }
+        )
+        if (!res.ok) {
+          console.error(res.status, res.statusText)
+          return
+        }
+        const json = await res.json()
+        if (!IsResponse(json)) {
+          console.error(`malformed priority response`)
+          return
+        }
+      } catch (err: any) {
+        console.error(err)
+        return []
+      }
+    },
+    async start(torrent: Torrent) {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_BASE_URL}/api/torrent/${torrent.hash}/start`,
+          {
+            method: 'GET'
+          }
+        )
+        if (!res.ok) {
+          console.error(res.status, res.statusText)
+          return
+        }
+        const json = await res.json()
+        if (!IsResponse(json)) {
+          console.error(`malformed start response`)
+          return
+        }
+      } catch (err: any) {
+        console.error(err)
+        return []
+      }
+    },
+    async stop(torrent: Torrent) {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_BASE_URL}/api/torrent/${torrent.hash}/stop`,
+          {
+            method: 'GET'
+          }
+        )
+        if (!res.ok) {
+          console.error(res.status, res.statusText)
+          return
+        }
+        const json = await res.json()
+        if (!IsResponse(json)) {
+          console.error(`malformed stop response`)
+          return
+        }
+      } catch (err: any) {
+        console.error(err)
+        return []
+      }
+    },
+    async pause(torrent: Torrent) {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_BASE_URL}/api/torrent/${torrent.hash}/pause`,
+          {
+            method: 'GET'
+          }
+        )
+        if (!res.ok) {
+          console.error(res.status, res.statusText)
+          return
+        }
+        const json = await res.json()
+        if (!IsResponse(json)) {
+          console.error(`malformed pause response`)
+          return
+        }
+      } catch (err: any) {
+        console.error(err)
+        return []
       }
     }
   }

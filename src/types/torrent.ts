@@ -10,6 +10,10 @@ export enum TorrentPriority {
   High = 3
 }
 
+export interface TorrentLabel {
+  name: string
+}
+
 export interface Torrent extends Indexable {
   hash: string
   name: string

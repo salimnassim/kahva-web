@@ -8,13 +8,15 @@
       If this message does not disappear, check the browser console tab for errors.
     </div>
   </div>
-
-  <TorrentContextMenu :context-menu="contextMenu" v-on:details="(t) => {
-    contextMenu.open = false;
-    expander.torrent = t;
-    expander.tab = ExpanderTab.Details;
-    expander.open = true;
-  }" />
+  <TorrentContextMenu :context-menu="contextMenu" v-on:start="(t) => { if (t === undefined) { return }; store.start(t) }"
+    v-on:pause="(t) => { if (t === undefined) { return }; store.pause(t) }"
+    v-on:stop="(t) => { if (t === undefined) { return }; store.stop(t) }" v-on:details="(t) => {
+      contextMenu.open = false;
+      expander.torrent = t;
+      expander.tab = ExpanderTab.Details;
+      expander.open = true;
+    }"
+    v-on:priority="(t, p) => { if (t === undefined) { return }; store.priority(t, { priority: p }); contextMenu.open = false; }" />
   <div class="h-full w-full flex flex-col bg-slate-900 text-slate-400" v-if="store.filter !== undefined">
     <TorrentViewHeader />
     <div class="grow overflow-x-auto overflow-y-auto w-full" :class="{ 'h-[60%]': expander.open }">
@@ -22,6 +24,7 @@
         contextMenu.open = false;
         contextMenu.torrent = undefined;
       }" v-on:row-clicked="(t, e) => {
+  contextMenu.open = false;
   contextMenu.torrent = t;
   contextMenu.x = e.clientX,
     contextMenu.y = e.clientY;
@@ -62,8 +65,6 @@ const expander = computed({
     store.expander(expander)
   }
 })
-
-
 
 // Refresh view every n seconds
 store.refreshView()
