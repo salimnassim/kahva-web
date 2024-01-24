@@ -10,10 +10,10 @@
                 store.upload(files[idx])
             }
         }" type="file" accept="application/x-bittorrent,.torrent" multiple class="hidden" />
-        <PlusCircleIcon class="h-6 mr-2 hover:cursor-pointer" @click="() => {
+        <PlusCircleIcon class="h-6 mr-2 text-white hover:cursor-pointer" @click="() => {
             input.click()
         }" />
-        <Cog6ToothIcon class="h-6 hover:cursor-pointer" />
+        <Cog6ToothIcon class="h-6 text-white hover:cursor-pointer" />
     </div>
 </template>
 
