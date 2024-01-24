@@ -1,13 +1,13 @@
 <template>
     <div class="flex flex-row text-sm mt-2 border-b border-slate-600">
         <div @click="tab = ExpanderTab.Details" class="bg-slate-600 mr-2 p-1 hover:cursor-pointer select-none"
-            :class="{ '!bg-slate-500': tab === ExpanderTab.Details }">Details</div>
-        <div @click="tab = ExpanderTab.Files" :class="{ '!bg-slate-500': tab === ExpanderTab.Files }"
+            :class="{ '!bg-slate-500 !text-slate-200': tab === ExpanderTab.Details }">Details</div>
+        <div @click="tab = ExpanderTab.Files" :class="{ '!bg-slate-500 !text-slate-200': tab === ExpanderTab.Files }"
             class="bg-slate-600 mr-2 p-1 hover:cursor-pointer select-none">Files</div>
-        <div @click="tab = ExpanderTab.Trackers" :class="{ '!bg-slate-500': tab === ExpanderTab.Trackers }"
+        <div @click="tab = ExpanderTab.Trackers" :class="{ '!bg-slate-500 !text-slate-200': tab === ExpanderTab.Trackers }"
             class="bg-slate-600 mr-2 p-1 hover:cursor-pointer select-none">Trackers
         </div>
-        <div @click="tab = ExpanderTab.Peers" :class="{ '!bg-slate-500': tab === ExpanderTab.Peers }"
+        <div @click="tab = ExpanderTab.Peers" :class="{ '!bg-slate-500 !text-slate-200': tab === ExpanderTab.Peers }"
             class="bg-slate-600 mr-2 p-1 hover:cursor-pointer select-none">Peers</div>
     </div>
 </template>
