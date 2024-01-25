@@ -22,19 +22,31 @@
         <div class="flex flex-col bg-slate-700 text-slate-400 border border-slate-600 w-32 rounded-sm text-xs">
             <div>
                 <div @click="$emit('start', props.contextMenu.torrent)"
-                    class="flex flex-row p-1 select-none hover:bg-slate-600 hover:cursor-pointer">
+                    class="flex flex-row p-1 select-none hover:bg-slate-600 hover:cursor-pointer" :class="{
+                        'bg-black hover:bg-black hover:cursor-not-allowed':
+                            status(props.contextMenu.torrent) !== TorrentStatus.Stopped
+                    }">
                     Start
                 </div>
                 <div @click="$emit('resume', props.contextMenu.torrent)"
-                    class="p-1 select-none hover:bg-slate-600 hover:cursor-pointer">
+                    class="p-1 select-none hover:bg-slate-600 hover:cursor-pointer" :class="{
+                        'bg-black hover:bg-black hover:cursor-not-allowed':
+                            status(props.contextMenu.torrent) !== TorrentStatus.Paused
+                    }">
                     Resume
                 </div>
                 <div @click="$emit('pause', props.contextMenu.torrent)"
-                    class="p-1 select-none hover:bg-slate-600 hover:cursor-pointer">
+                    class="p-1 select-none hover:bg-slate-600 hover:cursor-pointer" :class="{
+                        'bg-black hover:bg-black hover:cursor-not-allowed':
+                            status(props.contextMenu.torrent) !== TorrentStatus.Started
+                    }">
                     Pause
                 </div>
                 <div @click="$emit('stop', props.contextMenu.torrent)"
-                    class="p-1 select-none hover:bg-slate-600 hover:cursor-pointer">
+                    class="p-1 select-none hover:bg-slate-600 hover:cursor-pointer" :class="{
+                        'bg-black hover:bg-black hover:cursor-not-allowed':
+                            status(props.contextMenu.torrent) === TorrentStatus.Stopped
+                    }">
                     Stop
                 </div>
                 <div @click="$emit('recheck', props.contextMenu.torrent)"
@@ -79,7 +91,7 @@
 import { ref, watch } from 'vue'
 import { ChevronRightIcon } from '@heroicons/vue/24/solid'
 import { type ContextMenu } from '@/stores/store'
-import { type Torrent, TorrentPriority, type TorrentLabel } from '@/types/torrent'
+import { type Torrent, TorrentPriority, type TorrentLabel, TorrentStatus } from '@/types/torrent'
 import TorrentChildContextMenu from '@/components/TorrentChildContextMenu.vue'
 import { type ChildContextMenu } from '@/types/contextMenu'
 import { status } from '@/types/helpers'
