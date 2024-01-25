@@ -22,7 +22,6 @@
                         if (sticky.open === true) { sticky.open = false; return; }
                         sticky.x = (e.currentTarget as HTMLElement).getBoundingClientRect().left;
                         sticky.y = (e.currentTarget as HTMLElement).getBoundingClientRect().top - 160;
-                        console.log(windowHeight)
                         sticky.open = true
                     }" class="border-b border-slate-400 border-dashed text-slate-400 hover:cursor-pointer select-none">
                         Up:
@@ -53,15 +52,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { CloudArrowUpIcon, CloudArrowDownIcon, ArrowUpIcon, ArrowDownIcon } from '@heroicons/vue/24/solid'
 import TorrentViewFooterSticky from '@/components/TorrentViewFooterSticky.vue'
 import { useStore } from '@/stores/store'
 import { human } from '@/types/helpers'
 import { type Sticky } from '@/types/sticky'
 const store = useStore()
-
-const windowHeight = ref(window.innerHeight)
 
 const sticky = computed({
     get(): Sticky {
