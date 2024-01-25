@@ -23,28 +23,28 @@
             <div>
                 <div @click="$emit('start', props.contextMenu.torrent)"
                     class="flex flex-row p-1 select-none hover:bg-slate-600 hover:cursor-pointer" :class="{
-                        'bg-black hover:bg-black hover:cursor-not-allowed':
+                        'bg-gray-500 text-gray-900 hover:bg-gray-500 hover:cursor-not-allowed':
                             status(props.contextMenu.torrent) !== TorrentStatus.Stopped
                     }">
                     Start
                 </div>
                 <div @click="$emit('resume', props.contextMenu.torrent)"
                     class="p-1 select-none hover:bg-slate-600 hover:cursor-pointer" :class="{
-                        'bg-black hover:bg-black hover:cursor-not-allowed':
+                        'bg-gray-500 text-gray-900 hover:bg-gray-500 hover:cursor-not-allowed':
                             status(props.contextMenu.torrent) !== TorrentStatus.Paused
                     }">
                     Resume
                 </div>
                 <div @click="$emit('pause', props.contextMenu.torrent)"
                     class="p-1 select-none hover:bg-slate-600 hover:cursor-pointer" :class="{
-                        'bg-black hover:bg-black hover:cursor-not-allowed':
+                        'bg-gray-500 text-gray-900 hover:bg-gray-500 hover:cursor-not-allowed':
                             status(props.contextMenu.torrent) !== TorrentStatus.Started
                     }">
                     Pause
                 </div>
                 <div @click="$emit('stop', props.contextMenu.torrent)"
                     class="p-1 select-none hover:bg-slate-600 hover:cursor-pointer" :class="{
-                        'bg-black hover:bg-black hover:cursor-not-allowed':
+                        'bg-gray-500 text-gray-900 hover:bg-gray-500 hover:cursor-not-allowed':
                             status(props.contextMenu.torrent) === TorrentStatus.Stopped
                     }">
                     Stop
@@ -67,7 +67,7 @@
                     <div>Priority</div>
                     <ChevronRightIcon class="w-4 h-4" />
                 </div>
-                <div @mouseover="(e) => {
+                <!-- <div @mouseover="(e) => {
                     priorityContextMenu.open = false;
                     labelContextMenu.x = (e.currentTarget as HTMLElement).getBoundingClientRect().right ?? 0;
                     labelContextMenu.y = (e.currentTarget as HTMLElement).getBoundingClientRect().top ?? 0;
@@ -75,7 +75,7 @@
                 }" class="flex flex-row justify-between p-1 select-none hover:bg-slate-600 hover:cursor-pointer">
                     <div>Labels</div>
                     <ChevronRightIcon class="w-4 h-4" />
-                </div>
+                </div> -->
             </div>
             <hr class="h-px my-1 border-slate-500">
             <div>
