@@ -26,6 +26,7 @@
       <TorrentTable @click.prevent="() => {
         contextMenu.open = false;
         contextMenu.torrent = undefined;
+        sticky.open = false;
       }" v-on:row-clicked="(t, e) => {
   contextMenu.open = false;
   contextMenu.torrent = t;
@@ -49,6 +50,7 @@ import TorrentExpander from '@/components/TorrentExpander.vue'
 import TorrentTable from '@/components/TorrentTable.vue'
 import TorrentViewHeader from '@/components/TorrentViewHeader.vue'
 import TorrentViewFooter from '@/components/TorrentViewFooter.vue'
+import type { Sticky } from '@/types/sticky';
 const store = useStore()
 
 const contextMenu = computed({
@@ -67,6 +69,15 @@ const expander = computed({
   set(expander: Expander): void {
     store.expander(expander)
   }
+})
+
+const sticky = computed({
+    get(): Sticky {
+        return store.ui.sticky
+    },
+    set(sticky: Sticky) {
+        store.sticky(sticky)
+    }
 })
 
 // refresh on load so we dont have to wait for next interval

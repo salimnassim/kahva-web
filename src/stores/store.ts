@@ -7,6 +7,7 @@ import { IsPeerResponse, type Peer } from '@/types/peer'
 import { type ParentContextMenu } from '@/types/contextMenu'
 import { IsResponse } from '@/types/response'
 import { type TorrentPriorityRequest } from '@/types/request'
+import { type Sticky } from '@/types/sticky'
 
 export interface Indexable<T = any> {
   [key: string]: T
@@ -41,6 +42,7 @@ export interface UserInterface {
   collator: Intl.Collator
   sorting: Sorting
   contextMenu: ContextMenu
+  sticky: Sticky
   expander: Expander
   search: string
   updateInterval: number
@@ -63,6 +65,11 @@ export const useStore = defineStore('store', {
         x: 0,
         y: 0,
         torrent: undefined
+      },
+      sticky: {
+        open: false,
+        x: 0,
+        y: 0
       },
       expander: {
         open: false,
@@ -127,6 +134,9 @@ export const useStore = defineStore('store', {
     },
     async contextMenu(contextMenu: Partial<ContextMenu>) {
       this.ui.contextMenu = { ...this.ui.contextMenu, ...contextMenu }
+    },
+    async sticky(sticky: Partial<Sticky>) {
+      this.ui.sticky = { ...this.ui.sticky, ...sticky }
     },
     async sort(key: string, direction: boolean) {
       this.ui.sorting.key = key
