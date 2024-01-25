@@ -38,7 +38,7 @@
     <TorrentExpander v-if="expander.open"
       v-on:close="() => { expander.open = false; expander.torrent = undefined; expander.tab = ExpanderTab.Details; }"
       class="max-h-[40%] h-[40%]" :expander="expander" />
-    <TorrentViewFooter />
+    <TorrentViewFooter v-on:throttle="(type, kb) => { store.throttle({ type: type, kilobytes: kb }) }" />
   </div>
 </template>
 
@@ -72,12 +72,12 @@ const expander = computed({
 })
 
 const sticky = computed({
-    get(): Sticky {
-        return store.ui.sticky
-    },
-    set(sticky: Sticky) {
-        store.sticky(sticky)
-    }
+  get(): Sticky {
+    return store.ui.sticky
+  },
+  set(sticky: Sticky) {
+    store.sticky(sticky)
+  }
 })
 
 // refresh on load so we dont have to wait for next interval

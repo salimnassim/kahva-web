@@ -1,15 +1,33 @@
 <template>
-    <TorrentViewFooterSticky ref="inner" :sticky="sticky">
-        <div class="flex flex-col w-24 h-40 bg-slate-800 border border-slate-600 rounded-sm py-2 px-4 text-sm">
+    <TorrentViewFooterSticky :sticky="sticky">
+        <div class="flex flex-col w-24 h-44 bg-slate-800 border border-slate-600 rounded-sm text-sm py-2">
             <div class="w-full">
-                <!-- <input type="text" placeholder="MB" class="w-full bg-slate-700 border border-slate-400 rounded-sm outline-none" /> -->
-                <div>50 MB</div>
-                <div>40 MB</div>
-                <div>30 MB</div>
-                <div>20 MB</div>
-                <div>10 MB</div>
-                <div>5 MB</div>
-                <div>1 MB</div>
+                <input v-on:keyup.enter="(e) => {
+                    $emit('throttle', sticky.type, +(e.target as HTMLInputElement).value * 1024);
+                    sticky.open = false;
+                }" type="text" placeholder="MB (enter)"
+                    class="w-full px-2 bg-slate-700 border border-slate-400 rounded-sm outline-none" />
+                <div @click="$emit('throttle', sticky.type, 100 * 1024); sticky.open = false;"
+                    class="px-2 hover:bg-slate-600 hover:cursor-pointer">100 MB
+                </div>
+                <div @click="$emit('throttle', sticky.type, 75 * 1024); sticky.open = false;"
+                    class="px-2 hover:bg-slate-600 hover:cursor-pointer">75 MB
+                </div>
+                <div @click="$emit('throttle', sticky.type, 50 * 1024); sticky.open = false;"
+                    class="px-2 hover:bg-slate-600 hover:cursor-pointer">50 MB
+                </div>
+                <div @click="$emit('throttle', sticky.type, 20 * 1024); sticky.open = false;"
+                    class="px-2 hover:bg-slate-600 hover:cursor-pointer">25 MB
+                </div>
+                <div @click="$emit('throttle', sticky.type, 10 * 1024); sticky.open = false;"
+                    class="px-2 hover:bg-slate-600 hover:cursor-pointer">10 MB
+                </div>
+                <div @click="$emit('throttle', sticky.type, 5 * 1024); sticky.open = false;"
+                    class="px-2 hover:bg-slate-600 hover:cursor-pointer">5 MB
+                </div>
+                <div @click="$emit('throttle', sticky.type, 1 * 1024); sticky.open = false;"
+                    class="px-2 hover:bg-slate-600 hover:cursor-pointer">1 MB
+                </div>
             </div>
         </div>
     </TorrentViewFooterSticky>
@@ -21,8 +39,10 @@
                     <div @click="(e) => {
                         if (sticky.open === true) { sticky.open = false; return; }
                         sticky.x = (e.currentTarget as HTMLElement).getBoundingClientRect().left;
-                        sticky.y = (e.currentTarget as HTMLElement).getBoundingClientRect().top - 160;
+                        // todo: calculate sticky height instead of using a fixed value
+                        sticky.y = (e.currentTarget as HTMLElement).getBoundingClientRect().top - 176;
                         sticky.open = true
+                        sticky.type = 'up'
                     }" class="border-b border-slate-400 border-dashed text-slate-400 hover:cursor-pointer select-none">
                         Up:
                         {{
@@ -30,7 +50,14 @@
                 </div>
                 <div class="flex flex-row">
                     <ArrowDownIcon class="h-6 pr-2" />
-                    <div class="border-b border-slate-400 border-dashed text-slate-400 hover:cursor-pointer select-none">
+                    <div @click="(e) => {
+                        if (sticky.open === true) { sticky.open = false; return; }
+                        sticky.x = (e.currentTarget as HTMLElement).getBoundingClientRect().left;
+                        // todo: calculate sticky height instead of using a fixed value
+                        sticky.y = (e.currentTarget as HTMLElement).getBoundingClientRect().top - 176;
+                        sticky.open = true
+                        sticky.type = 'down'
+                    }" class="border-b border-slate-400 border-dashed text-slate-400 hover:cursor-pointer select-none">
                         Down: {{
                             human(store.system?.throttle_global_down_max_rate ?? 0) }}</div>
                 </div>
@@ -68,4 +95,9 @@ const sticky = computed({
         store.sticky(sticky)
     }
 })
+
+defineEmits<{
+    throttle: [type: 'up' | 'down', kilobytes: number]
+}>()
+
 </script>

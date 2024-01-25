@@ -6,7 +6,7 @@ import { IsTrackerResponse, type Tracker } from '@/types/tracker'
 import { IsPeerResponse, type Peer } from '@/types/peer'
 import { type ParentContextMenu } from '@/types/contextMenu'
 import { IsResponse } from '@/types/response'
-import { type TorrentPriorityRequest } from '@/types/request'
+import { type ThrottleRequest, type TorrentPriorityRequest } from '@/types/request'
 import { type Sticky } from '@/types/sticky'
 
 export interface Indexable<T = any> {
@@ -69,7 +69,8 @@ export const useStore = defineStore('store', {
       sticky: {
         open: false,
         x: 0,
-        y: 0
+        y: 0,
+        type: 'up'
       },
       expander: {
         open: false,
@@ -404,6 +405,26 @@ export const useStore = defineStore('store', {
         const json = await res.json()
         if (!IsResponse(json)) {
           console.error(`malformed recheck response`)
+          return
+        }
+      } catch (err: any) {
+        console.error(err)
+        return []
+      }
+    },
+    async throttle(request: ThrottleRequest) {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/throttle`, {
+          method: 'POST',
+          body: JSON.stringify(request)
+        })
+        if (!res.ok) {
+          console.error(res.status, res.statusText)
+          return
+        }
+        const json = await res.json()
+        if (!IsResponse(json)) {
+          console.error(`malformed throttle response`)
           return
         }
       } catch (err: any) {
