@@ -2,18 +2,23 @@
     <table class="w-full table-auto">
         <thead class="sticky top-0 bg-slate-900 text-xs">
             <tr class="text-left leading-6 border-b border-slate-400">
-                <th><input class="w-full bg-slate-900 text-white outline-none" v-model="search" type="text"
-                        placeholder="Search" /></th>
+                <th>
+                    <div class="flex flex-row justify-between">
+                        <input class="grow bg-slate-900 text-white outline-none" v-model="search" type="text"
+                            placeholder="Search" />
+                        <FunnelIcon class="h-6 p-1" />
+                    </div>
+                </th>
                 <th>Status</th>
                 <th class="hover:cursor-pointer" @click="sort('priority')">
                     <div class="flex flex-row justify-between">
                         <div>Priority</div>
                         <div>
                             <div v-if="store.ui.sorting.key == 'priority' && !store.ui.sorting.direction">
-                                <ArrowLongUpIcon class="h-6" />
+                                <ArrowLongUpIcon class="h-6 p-1" />
                             </div>
                             <div v-if="store.ui.sorting.key == 'priority' && store.ui.sorting.direction">
-                                <ArrowLongDownIcon class="h-6" />
+                                <ArrowLongDownIcon class="h-6 p-1" />
                             </div>
                         </div>
                     </div>
@@ -23,10 +28,10 @@
                         <div>Size</div>
                         <div>
                             <div v-if="store.ui.sorting.key == 'size_bytes' && !store.ui.sorting.direction">
-                                <ArrowLongUpIcon class="h-6" />
+                                <ArrowLongUpIcon class="h-6 p-1" />
                             </div>
                             <div v-if="store.ui.sorting.key == 'size_bytes' && store.ui.sorting.direction">
-                                <ArrowLongDownIcon class="h-6" />
+                                <ArrowLongDownIcon class="h-6 p-1" />
                             </div>
                         </div>
                     </div>
@@ -36,10 +41,10 @@
                         <div>Completed</div>
                         <div>
                             <div v-if="store.ui.sorting.key == 'completed_bytes' && !store.ui.sorting.direction">
-                                <ArrowLongUpIcon class="h-6" />
+                                <ArrowLongUpIcon class="h-6 p-1" />
                             </div>
                             <div v-if="store.ui.sorting.key == 'completed_bytes' && store.ui.sorting.direction">
-                                <ArrowLongDownIcon class="h-6" />
+                                <ArrowLongDownIcon class="h-6 p-1" />
                             </div>
                         </div>
                     </div>
@@ -50,10 +55,10 @@
                         <div>Up rate</div>
                         <div>
                             <div v-if="store.ui.sorting.key == 'upload_rate' && !store.ui.sorting.direction">
-                                <ArrowLongUpIcon class="h-6" />
+                                <ArrowLongUpIcon class="h-6 p-1" />
                             </div>
                             <div v-if="store.ui.sorting.key == 'upload_rate' && store.ui.sorting.direction">
-                                <ArrowLongDownIcon class="h-6" />
+                                <ArrowLongDownIcon class="h-6 p-1" />
                             </div>
                         </div>
                     </div>
@@ -63,10 +68,10 @@
                         <div>Down rate</div>
                         <div>
                             <div v-if="store.ui.sorting.key == 'download_rate' && !store.ui.sorting.direction">
-                                <ArrowLongUpIcon class="h-6" />
+                                <ArrowLongUpIcon class="h-6 p-1" />
                             </div>
                             <div v-if="store.ui.sorting.key == 'download_rate' && store.ui.sorting.direction">
-                                <ArrowLongDownIcon class="h-6" />
+                                <ArrowLongDownIcon class="h-6 p-1" />
                             </div>
                         </div>
                     </div>
@@ -76,10 +81,10 @@
                         <div>Up total</div>
                         <div>
                             <div v-if="store.ui.sorting.key == 'upload_total' && !store.ui.sorting.direction">
-                                <ArrowLongUpIcon class="h-6" />
+                                <ArrowLongUpIcon class="h-6 p-1" />
                             </div>
                             <div v-if="store.ui.sorting.key == 'upload_total' && store.ui.sorting.direction">
-                                <ArrowLongDownIcon class="h-6" />
+                                <ArrowLongDownIcon class="h-6 p-1" />
                             </div>
                         </div>
                     </div>
@@ -89,10 +94,10 @@
                         <div>Down total</div>
                         <div>
                             <div v-if="store.ui.sorting.key == 'download_total' && !store.ui.sorting.direction">
-                                <ArrowLongUpIcon class="h-6" />
+                                <ArrowLongUpIcon class="h-6 p-1" />
                             </div>
                             <div v-if="store.ui.sorting.key == 'download_total' && store.ui.sorting.direction">
-                                <ArrowLongDownIcon class="h-6" />
+                                <ArrowLongDownIcon class="h-6 p-1" />
                             </div>
                         </div>
                     </div>
@@ -102,10 +107,10 @@
                         <div>Leechers</div>
                         <div>
                             <div v-if="store.ui.sorting.key == 'leechers' && !store.ui.sorting.direction">
-                                <ArrowLongUpIcon class="h-6" />
+                                <ArrowLongUpIcon class="h-6 p-1" />
                             </div>
                             <div v-if="store.ui.sorting.key == 'leechers' && store.ui.sorting.direction">
-                                <ArrowLongDownIcon class="h-6" />
+                                <ArrowLongDownIcon class="h-6 p-1" />
                             </div>
                         </div>
                     </div>
@@ -115,10 +120,10 @@
                         <div>Seeders</div>
                         <div>
                             <div v-if="store.ui.sorting.key == 'seeders' && !store.ui.sorting.direction">
-                                <ArrowLongUpIcon class="h-6" />
+                                <ArrowLongUpIcon class="h-6 p-1" />
                             </div>
                             <div v-if="store.ui.sorting.key == 'seeders' && store.ui.sorting.direction">
-                                <ArrowLongDownIcon class="h-6" />
+                                <ArrowLongDownIcon class="h-6 p-1" />
                             </div>
                         </div>
                     </div>
@@ -156,7 +161,7 @@
 </template>
 
 <script setup lang="ts">
-import { ChatBubbleOvalLeftEllipsisIcon, ArrowLongUpIcon, ArrowLongDownIcon } from '@heroicons/vue/24/solid'
+import { ChatBubbleOvalLeftEllipsisIcon, ArrowLongUpIcon, ArrowLongDownIcon, FunnelIcon } from '@heroicons/vue/24/solid'
 import { human, percent, priority, status } from '@/types/helpers'
 import { useStore } from '@/stores/store'
 import { computed } from 'vue';
