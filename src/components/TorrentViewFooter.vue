@@ -35,7 +35,7 @@
         <div class="flex flex-row px-2">
             <div class="flex flex-row justify-between border-r border-slate-400 pr-2 leading-6">
                 <div class="flex flex-row mr-2">
-                    <ArrowUpIcon class="h-6 pr-2" />
+                    <ArrowUpIcon class="h-6 pr-2 p-1" />
                     <div @click="(e) => {
                         if (sticky.open === true) { sticky.open = false; return; }
                         sticky.x = (e.currentTarget as HTMLElement).getBoundingClientRect().left;
@@ -49,7 +49,7 @@
                             human(store.system?.throttle_global_up_max_rate ?? 0) }}</div>
                 </div>
                 <div class="flex flex-row">
-                    <ArrowDownIcon class="h-6 pr-2" />
+                    <ArrowDownIcon class="h-6 pr-2 p-1" />
                     <div @click="(e) => {
                         if (sticky.open === true) { sticky.open = false; return; }
                         sticky.x = (e.currentTarget as HTMLElement).getBoundingClientRect().left;
@@ -64,12 +64,12 @@
             </div>
             <div class="flex flex-row justify-between pl-2 leading-6">
                 <div class="flex flex-row mr-2">
-                    <CloudArrowUpIcon class="h-6 pr-2" />
+                    <CloudArrowUpIcon class="h-6 pr-2 p-1" />
                     <div class=" text-slate-400 select-none">Up: {{
                         human(store.system?.throttle_global_up_rate ?? 0) }}</div>
                 </div>
                 <div class="flex flex-row">
-                    <CloudArrowDownIcon class="h-6 pr-2" />
+                    <CloudArrowDownIcon class="h-6 pr-2 p-1" />
                     <div class=" text-slate-400 select-none">Down: {{
                         human(store.system?.throttle_global_down_rate ?? 0) }}</div>
                 </div>
